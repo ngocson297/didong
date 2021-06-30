@@ -24,13 +24,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
           leading: InkWell(
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(6),
               child: CircleAvatar(backgroundImage: NetworkImage(g_User.imgUrl)),
             ),
             onTap: (){
@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
         body: TabBarView(
           children: const [
             ChatPage(),
+            ChatPage(),
             FriendPage(),
           ],
         ),
@@ -57,6 +58,10 @@ class _HomePageState extends State<HomePage> {
           labelColor: Colors.black,
           unselectedLabelColor: Colors.black12,
           tabs: [
+            Tab(
+              icon: Icon(Icons.home),
+              text: "Home",
+            ),
             Tab(
               icon: Icon(Icons.message),
               text: "Chats",

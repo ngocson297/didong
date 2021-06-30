@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
+import 'package:flutter_chat_app/pages/signup_page.dart';
 import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 
@@ -56,35 +57,103 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Login"),
+//       ),
+//       body: Center(
+//         child: _loading?
+//         CircularProgressIndicator()
+//         : Column(
+//           children: [
+//             TextField(
+//               controller: _emailTextController,
+//             ),
+//             TextField(
+//               controller: _passwordTextController,
+//               obscureText: true,
+//               decoration: InputDecoration(
+//                 border: OutlineInputBorder(),
+//                 labelText: 'Password',
+//
+//               ),
+//             ),
+//             ElevatedButton(
+//               child: Text("LOGIN",
+//               textAlign: TextAlign.center,
+//               ),
+//               onPressed: _login,
+//             ),
+//             InkWell(
+//               child: Text("Don't have Account? Sign up!"),
+//               onTap: () {},
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text('Login'),
       ),
-      body: Center(
-        child: _loading?
-        CircularProgressIndicator()
-        : Column(
-          children: [
-            TextField(
-              controller: _emailTextController,
-            ),
-            TextField(
-              controller: _passwordTextController,
-              obscureText: true,
-            ),
-            ElevatedButton(
-              child: Text("LOGIN"),
-              onPressed: _login,
-            ),
-            InkWell(
-              child: Text("Don't have Account? Sign up!"),
-              onTap: () {},
-            )
-          ],
-        ),
-      ),
-    );
-  }
+      body: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  autofocus: true,
+                  controller: _emailTextController,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.account_circle_rounded),
+                    border: OutlineInputBorder(),
+                    labelText: 'User Name',
+                    hintText: 'Enter Your Name',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  autofocus: true,
+                  controller: _passwordTextController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter Password',
+                  ),
+                ),
+              ),
+
+              ElevatedButton(
+                child: Text("LOGIN",
+                  textAlign: TextAlign.center,
+                ),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+                onPressed: _login,
+              ),
+              InkWell(
+                child: Text("Don't have Account? Sign up!"),
+                onTap: () {},
+              )
+            ],
+          )
+      )
+  );
+}
 }
