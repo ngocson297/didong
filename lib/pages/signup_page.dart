@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
+import 'package:flutter_chat_app/pages/login_page.dart';
 import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_chat_app/ults/global.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupPage extends StatefulWidget {
   SignupPage({Key key}) : super(key: key);
@@ -24,43 +26,62 @@ class _SignupPageState extends State<SignupPage> {
   final _verifyTextController = TextEditingController();
 
   void _signup() async {
-    return;
+    if(_loading) return
     setState(() {
       _loading = true;
     });
 
-    User user = (await _firebaseAuth.createUserWithEmailAndPassword(
-            email: _emailTextController.text, password: _passwordTextController.text)
-        ).user;
+    try{
+      if(_passwordTextController.text != _verifyTextController.text) throw "Password not match";
 
-    if(user != null) {
+      final user = (await _firebaseAuth.createUserWithEmailAndPassword(
+          email: _emailTextController.text,
+          password: _passwordTextController.text)
+      ).user;
 
-      var storageRef = FirebaseStorage.instance.ref();
+      if(user != null) {
+        final QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where("uid", isEqualTo: user.uid)
+            .get();
 
+        if (snapshot.docs.isEmpty) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({
+            'username': _nameTextController.text,
+            'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8',
+            'chats': [],
+            'friends': [],
+          });
 
-      final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where("uid",isEqualTo: user.uid)
-          .get();
+          g_User = new UserModel(
+              uid: user.uid,
+              username: _nameTextController.text,
+              imgUrl: 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8'
+          );
 
-      if(snapshot.docs.isNotEmpty){
-        g_User = new UserModel(
-            uid: snapshot.docs.first.id,
-            username: snapshot.docs.first.data()["username"],
-            imgUrl: snapshot.docs.first.data()["imageUrl"]
-        );
+          Fluttertoast.showToast(msg: "Sign up success");
 
-        Navigator.pop(context);
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => HomePage(title: "Chat",)));
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => HomePage()));
 
-        return;
+          return;
+        }
+      }
+      else{
+        throw "User already exist";
       }
     }
-
-    setState(() {
-      _loading = false;
-    });
+    catch(e){
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    finally{
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -94,7 +115,10 @@ class _SignupPageState extends State<SignupPage> {
             ),
             InkWell(
               child: Text("Already have Account? Login!"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) => LoginPage()));
+              },
             )
           ],
         ),

@@ -20,12 +20,12 @@ class _ChatMessageState extends State<ChatMessage>{
 
   Future<MessageModel> _loadMessage() async {
     return MessageModel(
-      fromUser: widget.snapshot.data()["from"],
+      fromUser: widget.snapshot.get("from"),
       userName: widget.sender,
       userImage: widget.senderImg,
-      content: widget.snapshot.data()["content"],
-      imgUrl: widget.snapshot.data()["imageUrl"],
-      time: widget.snapshot.data()["time"],
+      content: widget.snapshot.get("content"),
+      imgUrl: widget.snapshot.get("imageUrl"),
+      time: widget.snapshot.get("time"),
     );
   }
 

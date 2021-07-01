@@ -23,7 +23,7 @@ class _FriendPageState extends State<FriendPage> {
       padding: EdgeInsets.all(10),
       child: Column(
         children: [
-          SearchBar(),
+          //SearchBar(),
           SizedBox(height: 10,),
           Expanded(child: Center()),
         ],
