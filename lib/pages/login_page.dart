@@ -6,6 +6,7 @@ import 'package:flutter_chat_app/pages/home_page.dart';
 import 'package:flutter_chat_app/pages/signup_page.dart';
 import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
 import 'package:flutter_chat_app/ults/global.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -22,39 +23,47 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordTextController = TextEditingController();
 
   void _login() async {
+    if(_loading) return;
     setState(() {
       _loading = true;
     });
+    try{
+      final user = (await _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailTextController.text,
+          password: _passwordTextController.text)
+      ).user;
 
-    User user = (await _firebaseAuth.signInWithEmailAndPassword(
-            email: _emailTextController.text, password: _passwordTextController.text)
-        ).user;
+      if(user != null){
+        final QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where("uid",isEqualTo: user.uid)
+            .get();
 
-    if(user != null) {
+        if(snapshot.docs.isNotEmpty){
+          g_User = new UserModel(
+              uid: snapshot.docs.first.id,
+              username: snapshot.docs.first.get("username"),
+              imgUrl: snapshot.docs.first.get("imageUrl")
+          );
 
-      final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where("uid",isEqualTo: user.uid)
-          .get();
+          Fluttertoast.showToast(msg: "Login success");
 
-      if(snapshot.docs.isNotEmpty){
-        g_User = new UserModel(
-            uid: snapshot.docs.first.id,
-            username: snapshot.docs.first.data()["username"],
-            imgUrl: snapshot.docs.first.data()["imageUrl"]
-        );
-
-        Navigator.pop(context);
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => HomePage(title: "Chat",)));
-
-        return;
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => HomePage()));
+        }
+      }
+      else{
+        throw "User not found";
       }
     }
-
-    setState(() {
-      _loading = false;
-    });
+    catch(e){
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    finally{
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 
 //   @override
@@ -149,7 +158,10 @@ Widget build(BuildContext context) {
               ),
               InkWell(
                 child: Text("Don't have Account? Sign up!"),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (context) => SignupPage()));
+                },
               )
             ],
           )

@@ -12,11 +12,11 @@ class HomeChatItem extends StatelessWidget {
   Future<ChatModel> _loadChat() async {
     ChatModel model = ChatModel(
         chatId: snapshot.id,
-        chatName: snapshot.data()["chatName"],
-        latestMsg: snapshot.data()["latestMsg"],
-        time: snapshot.data()["time"],
-        chatImg: snapshot.data()["chatImage"],
-        users: snapshot.data()["users"]
+        chatName: snapshot.get("chatName"),
+        latestMsg: snapshot.get("latestMsg"),
+        time: snapshot.get("time"),
+        chatImg: snapshot.get("chatImage"),
+        users: snapshot.get("users")
     );
 
     if(model.users.length <= 2){
@@ -37,7 +37,7 @@ class HomeChatItem extends StatelessWidget {
     return FutureBuilder<ChatModel>(
         future: _loadChat(),
         builder: (context, AsyncSnapshot<ChatModel> snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
+          if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
           return InkWell(
               child: ListTile(
                 leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data.chatImg), radius: 28,),

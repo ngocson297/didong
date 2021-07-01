@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:giphy_picker/giphy_picker.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 
 class ConversationPage extends StatefulWidget {
   ConversationPage({Key key, this.title, this.id, this.users}) : super(key: key);
@@ -24,9 +25,13 @@ class _ConversationPageState extends State<ConversationPage> {
   Map _usersdetail = Map<dynamic, dynamic>();
   bool _loading = true;
 
+  bool _showEmoji = false;
+
   final TextEditingController _textEditingController = TextEditingController();
   final ScrollController _listScrollController = ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  FocusNode _textFieldFocus = FocusNode();
 
   @override
   void initState() {
@@ -138,6 +143,19 @@ class _ConversationPageState extends State<ConversationPage> {
       );
     }
   }
+  Widget _EmojiPicker(){
+    return EmojiPicker(
+      // bgColor: Colors.black,
+      // indicatorColor: Colors.blue,
+      // indicatorColor: Colors.blue,
+      rows: 3,
+      columns: 7,
+      buttonMode: ButtonMode.MATERIAL,
+      onEmojiSelected: (emoji, category) {
+        _textEditingController.text = _textEditingController.text + emoji.emoji;
+      },
+    );
+  }
 
   Widget _ChatInput(){
     return Row(
@@ -161,6 +179,15 @@ class _ConversationPageState extends State<ConversationPage> {
           icon: Icon(Icons.gif),
           onPressed: _selectGif,
         ),
+        IconButton(
+          icon: Icon(Icons.face),
+          onPressed: () {
+            setState(() {
+              _showEmoji = !_showEmoji;
+            });
+            if(_textFieldFocus.hasFocus) _textFieldFocus.unfocus();
+          }
+        ),
         Expanded(
           child: TextField(
             decoration: InputDecoration(
@@ -171,6 +198,12 @@ class _ConversationPageState extends State<ConversationPage> {
               ),
             ),
             controller: _textEditingController,
+            focusNode: _textFieldFocus,
+            onTap: (){
+              setState(() {
+                _showEmoji = false;
+              });
+            },
           ),
         ),
         IconButton(
@@ -206,8 +239,8 @@ class _ConversationPageState extends State<ConversationPage> {
                       .map<Widget>((message){
                     return ChatMessage(
                           snapshot: message,
-                          sender: _usersdetail[message.data()["from"]]["name"],
-                          senderImg: _usersdetail[message.data()["from"]]["img"],
+                          sender: _usersdetail[message.get("from")]["name"],
+                          senderImg: _usersdetail[message.get("from")]["img"],
                         );
                       }).toList(),
                   reverse: true,
@@ -216,6 +249,7 @@ class _ConversationPageState extends State<ConversationPage> {
               },
             ),
           ),
+          _showEmoji ? _EmojiPicker(): Container(),
           _ChatInput(),
         ],
       ),
