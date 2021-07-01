@@ -36,6 +36,7 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        backgroundColor: Colors.deepOrange,
         title: Text("Me"),
       ),
       body: ListView(

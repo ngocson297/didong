@@ -110,12 +110,26 @@ class _LoginPageState extends State<LoginPage> {
 Widget build(BuildContext context) {
   return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        backgroundColor: Colors.deepOrange,
+        // title: Text('Login'),
+          title: Align (
+              child: Text("Login"),
+              alignment: Alignment.center
+          )
       ),
       body: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(25),
+                child: Text('Sign In',
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.black87,
+                ),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(15),
                 child: TextField(
@@ -124,6 +138,7 @@ Widget build(BuildContext context) {
                   decoration: InputDecoration(
                     icon: Icon(Icons.account_circle_rounded),
                     border: OutlineInputBorder(),
+                    fillColor: Colors.deepOrange,
                     labelText: 'User Name',
                     hintText: 'Enter Your Name',
                   ),
@@ -138,6 +153,7 @@ Widget build(BuildContext context) {
                   decoration: InputDecoration(
                     icon: Icon(Icons.lock_outline),
                     border: OutlineInputBorder(),
+                    fillColor: Colors.deepOrange,
                     labelText: 'Password',
                     hintText: 'Enter Password',
                   ),
@@ -149,12 +165,12 @@ Widget build(BuildContext context) {
                   textAlign: TextAlign.center,
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    primary: Colors.deepOrange,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                     textStyle: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold)),
-                onPressed: _login,
+                    onPressed: _login,
               ),
               InkWell(
                 child: Text("Don't have Account? Sign up!"),
@@ -163,6 +179,7 @@ Widget build(BuildContext context) {
                       builder: (context) => SignupPage()));
                 },
               )
+
             ],
           )
       )
