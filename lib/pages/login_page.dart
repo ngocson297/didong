@@ -110,24 +110,52 @@ class _LoginPageState extends State<LoginPage> {
 Widget build(BuildContext context) {
   return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        backgroundColor: Colors.deepOrange,
+        // title: Text('Login'),
+          title: Align (
+              child: Text("Login"),
+              alignment: Alignment.center
+          )
       ),
       body: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
               Padding(
+                padding: EdgeInsets.all(25),
+                child: Text('Sign In',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 32,
+                    color: Colors.deepOrange,
+                    fontFamily: 'RobotoMono',
+                ),
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.all(15),
                 child: TextField(
                   autofocus: true,
                   controller: _emailTextController,
                   decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
                     icon: Icon(Icons.account_circle_rounded),
-                    border: OutlineInputBorder(),
+                    // border: OutlineInputBorder(),
+                    fillColor: Colors.deepOrange,
                     labelText: 'User Name',
                     hintText: 'Enter Your Name',
                   ),
+                  cursorColor: Colors.deepOrange,
                 ),
+
               ),
               Padding(
                 padding: EdgeInsets.all(15),
@@ -136,11 +164,22 @@ Widget build(BuildContext context) {
                   controller: _passwordTextController,
                   obscureText: true,
                   decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
                     icon: Icon(Icons.lock_outline),
-                    border: OutlineInputBorder(),
+                    // border: OutlineInputBorder(),
+                    fillColor: Colors.deepOrange,
                     labelText: 'Password',
                     hintText: 'Enter Password',
                   ),
+                  cursorColor: Colors.deepOrange,
                 ),
               ),
 
@@ -149,12 +188,12 @@ Widget build(BuildContext context) {
                   textAlign: TextAlign.center,
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    primary: Colors.deepOrange,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                     textStyle: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold)),
-                onPressed: _login,
+                    onPressed: _login,
               ),
               InkWell(
                 child: Text("Don't have Account? Sign up!"),

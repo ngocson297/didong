@@ -18,7 +18,7 @@ class SearchBar extends StatelessWidget{
             Icon(Icons.search),
             SizedBox(width: 10,),
             Text(
-              "Search",
+              "Search...",
               style: TextStyle(
                 color: Colors.grey,
                 fontStyle: FontStyle.italic,

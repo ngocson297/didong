@@ -194,7 +194,7 @@ class _ConversationPageState extends State<ConversationPage> {
             decoration: InputDecoration(
               hintText: "Enter Your Text...",
               hintStyle: TextStyle(
-                color: Colors.grey,
+                color: Colors.deepOrange,
                 fontStyle: FontStyle.italic,
               ),
             ),

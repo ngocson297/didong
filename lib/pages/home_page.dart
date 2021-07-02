@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.deepOrange,
           leading: InkWell(
             child: Padding(
               padding: EdgeInsets.all(6),
@@ -143,8 +144,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         bottomNavigationBar: TabBar(
+          indicatorColor: Colors.orangeAccent,
+          indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 4,
-          labelColor: Colors.black,
+          labelColor: Colors.deepOrange,
           unselectedLabelColor: Colors.black12,
           tabs: [
             Tab(
@@ -160,6 +163,7 @@ class _HomePageState extends State<HomePage> {
               text: "Friends",
             ),
           ],
+
         ),
       ),
     );
