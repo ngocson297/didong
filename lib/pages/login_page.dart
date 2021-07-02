@@ -125,8 +125,10 @@ Widget build(BuildContext context) {
                 padding: EdgeInsets.all(25),
                 child: Text('Sign In',
                   style: TextStyle(
+                    fontWeight: FontWeight.w600,
                     fontSize: 32,
-                    color: Colors.black87,
+                    color: Colors.deepOrange,
+                    fontFamily: 'RobotoMono',
                 ),
                 ),
               ),
@@ -136,13 +138,24 @@ Widget build(BuildContext context) {
                   autofocus: true,
                   controller: _emailTextController,
                   decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
                     icon: Icon(Icons.account_circle_rounded),
-                    border: OutlineInputBorder(),
+                    // border: OutlineInputBorder(),
                     fillColor: Colors.deepOrange,
                     labelText: 'User Name',
                     hintText: 'Enter Your Name',
                   ),
+                  cursorColor: Colors.deepOrange,
                 ),
+
               ),
               Padding(
                 padding: EdgeInsets.all(15),
@@ -151,12 +164,22 @@ Widget build(BuildContext context) {
                   controller: _passwordTextController,
                   obscureText: true,
                   decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepOrange),
+                    ),
                     icon: Icon(Icons.lock_outline),
-                    border: OutlineInputBorder(),
+                    // border: OutlineInputBorder(),
                     fillColor: Colors.deepOrange,
                     labelText: 'Password',
                     hintText: 'Enter Password',
                   ),
+                  cursorColor: Colors.deepOrange,
                 ),
               ),
 
@@ -179,7 +202,6 @@ Widget build(BuildContext context) {
                       builder: (context) => SignupPage()));
                 },
               )
-
             ],
           )
       )
