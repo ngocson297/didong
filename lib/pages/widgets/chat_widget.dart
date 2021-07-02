@@ -20,7 +20,7 @@ class HomeChatItem extends StatelessWidget {
     );
 
     if(model.users.length <= 2){
-      var otherUser = model.users[0] == g_User.uid ? model.users[1] : model.users[0];
+      var otherUser = model.users[0] == global_User.uid ? model.users[1] : model.users[0];
       var doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(otherUser)

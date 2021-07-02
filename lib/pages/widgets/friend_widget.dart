@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
+import 'package:flutter_chat_app/pages/profile_page.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -25,12 +26,12 @@ class FriendItem extends StatelessWidget{
   void _removeFriend(String id){
     FirebaseFirestore.instance
         .collection('users')
-        .doc(g_User.uid)
+        .doc(global_User.uid)
         .update({'friends': FieldValue.arrayRemove([id])});
     FirebaseFirestore.instance
         .collection('users')
         .doc(id)
-        .update({'friends': FieldValue.arrayRemove([g_User.uid])});
+        .update({'friends': FieldValue.arrayRemove([global_User.uid])});
 
     Fluttertoast.showToast(msg: "Friend removed");
   }
@@ -38,39 +39,41 @@ class FriendItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-        future: _loadUser(),
-        builder: (context, AsyncSnapshot<UserModel> snapshot) {
-          if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-          return InkWell(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                ),
-                child: ListTile(
-                  leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data.imgUrl), radius: 28,),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        snapshot.data.username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+      future: _loadUser(),
+      builder: (context, AsyncSnapshot<UserModel> snapshot) {
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
+        return InkWell(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+              ),
+              child: ListTile(
+                leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data.imgUrl), radius: 28,),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      snapshot.data.username,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      ElevatedButton(
-                        child: Text("Unfriend"),
-                        onPressed: () {
-                          _removeFriend(snapshot.data.uid);
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                    ElevatedButton(
+                      child: Text("Unfriend"),
+                      onPressed: () {
+                        _removeFriend(snapshot.data.uid);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              onTap: (){}
-          );
-        }
+            ),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(id: snapshot.data.uid)));
+            }
+        );
+      }
     );
   }
 }

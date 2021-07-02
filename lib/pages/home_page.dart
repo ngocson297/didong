@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/pages/chat_page.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -23,11 +27,23 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _loadAppKey();
     _registerNotification();
     _initLocalNotification();
   }
 
   DateTime _currentBackPressTime;
+
+  void _loadAppKey(){
+    var storageRef = FirebaseStorage.instance.ref();
+    var giphyRef = storageRef.child('key/giphy_key.txt');
+    giphyRef.getDownloadURL().then((url){
+      http.get(Uri.parse(url)).then((value) {
+        global_giphy_key = value.body.toString();
+        print('GIPHY: '+ global_giphy_key);
+      });
+    });
+  }
 
   void _registerNotification() {
     _firebaseMessaging.requestPermission();
@@ -45,7 +61,7 @@ class _HomePageState extends State<HomePage> {
       print('token: $token');
       FirebaseFirestore.instance
           .collection('users')
-          .doc(g_User.uid)
+          .doc(global_User.uid)
           .update({'pushToken': token});
     }).catchError((err) {
       Fluttertoast.showToast(msg: err.message.toString());
@@ -111,19 +127,14 @@ class _HomePageState extends State<HomePage> {
           leading: InkWell(
             child: Padding(
               padding: EdgeInsets.all(6),
-              child: CircleAvatar(backgroundImage: NetworkImage(g_User.imgUrl)),
+              child: CircleAvatar(backgroundImage: NetworkImage(global_User.imgUrl)),
             ),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
             },
           ),
-          title: Text(g_User.username),
+          title: Text(global_User.username),
           actions: [
-            IconButton(
-              icon: Icon(Icons.edit),
-              iconSize: 32,
-              onPressed: (){},
-            ),
             IconButton(
               icon: Icon(Icons.notifications_rounded),
               iconSize: 32,

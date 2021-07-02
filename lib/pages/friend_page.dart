@@ -26,7 +26,7 @@ class _FriendPageState extends State<FriendPage> {
             child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("users")
-                  .where("friends",arrayContains: g_User.uid)
+                  .where("friends",arrayContains: global_User.uid)
                   .orderBy('username').snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if(!snapshot.hasData) return LinearProgressIndicator();

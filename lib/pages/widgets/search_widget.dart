@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_chat_app/pages/profile_page.dart';
 import 'package:flutter_chat_app/pages/search_page.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 
@@ -46,25 +47,33 @@ class SearchItem extends StatefulWidget{
 
 class _SearchItemState extends State<SearchItem>{
 
+  bool _added;
   bool _sent;
+  bool _received;
+
+  var request;
 
   Future<bool> _isFriend() async{
     _sent = false;
     var doc = await FirebaseFirestore.instance
         .collection('users')
-        .doc(g_User.uid)
+        .doc(global_User.uid)
         .get();
     List<dynamic> friends = doc.data()["friends"];
-    print(widget.snapshot.id);
-    if(friends.contains(widget.snapshot.id)) return true;
+    if(friends.contains(widget.snapshot.id)) {
+      _added = true;
+      return true;
+    }
     _sent = await _isSent();
+    _received = await _isReceived();
+    _added = false;
     return false;
   }
 
   Future<bool> _isSent() async{
     var snapshot = await FirebaseFirestore.instance
         .collection('requests')
-        .where('from',isEqualTo: g_User.uid)
+        .where('from',isEqualTo: global_User.uid)
         .get();
     if(snapshot.docs.isNotEmpty){
       for(var doc in snapshot.docs) {
@@ -76,7 +85,23 @@ class _SearchItemState extends State<SearchItem>{
     return false;
   }
 
-  void _addFriend(String id) async{
+  Future<bool> _isReceived() async{
+    var snapshot = await FirebaseFirestore.instance
+        .collection('requests')
+        .where('to',isEqualTo: global_User.uid)
+        .get();
+    if(snapshot.docs.isNotEmpty){
+      for(var doc in snapshot.docs) {
+        if (doc.get('from') == widget.snapshot.id) {
+          request = doc;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  void _sendRequest(String id) async{
     _sent = await _isSent();
     if(_sent){
       setState(() {
@@ -89,12 +114,30 @@ class _SearchItemState extends State<SearchItem>{
         .collection('requests')
         .doc()
         .set({
-      'from': g_User.uid,
+      'from': global_User.uid,
       'to': id,
     }).then((value) {
       setState(() {
         _sent = true;
       });
+    });
+  }
+
+  void _addFriend(String id) async{
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(global_User.uid)
+        .update({'friends': FieldValue.arrayUnion([id])});
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .update({'friends': FieldValue.arrayUnion([global_User.uid])});
+
+    FirebaseFirestore.instance
+        .collection('requests')
+        .doc(request.id).delete();
+    setState(() {
+      _added = true;
     });
   }
 
@@ -122,16 +165,21 @@ class _SearchItemState extends State<SearchItem>{
                         ),
                       ),
                       ElevatedButton(
-                        child: Text(snapshot.data ? "Added" : _sent? "Sent" : "Request"),
-                        onPressed: snapshot.data || _sent ? null : (){
+                        child: Text(_added ? "Added" : _sent? "Sent" : _received ? "Accept" : "Request"),
+                        onPressed: _added || _sent ? null
+                        : _received? (){
                           _addFriend(widget.snapshot.id);
+                        } : (){
+                          _sendRequest(widget.snapshot.id);
                         },
                       )
                     ],
                   ),
                 ),
               ),
-              onTap: (){}
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(id: widget.snapshot.id)));
+              }
           );
         }
     );
