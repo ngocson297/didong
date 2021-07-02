@@ -98,6 +98,7 @@ class _ConversationPageState extends State<ConversationPage> {
   void _selectPhoto(String choice) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: choice == "Take Photo"? ImageSource.camera: ImageSource.gallery,
+      imageQuality: 1,
     );
 
     String fileName = path.basename(pickedFile.path);

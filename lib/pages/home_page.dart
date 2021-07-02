@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/pages/chat_page.dart';
 import 'package:flutter_chat_app/pages/friend_page.dart';
 import 'package:flutter_chat_app/pages/menu_page.dart';
+import 'package:flutter_chat_app/pages/request_page.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePage> {
       Fluttertoast.showToast(msg: err.message.toString());
     });
   }
+
   void _showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'com.lttbdd.flutter_chat_app',
@@ -116,11 +118,18 @@ class _HomePageState extends State<HomePage> {
           ),
           title: Text(g_User.username),
           actions: [
-            // IconButton(
-            //   icon: Icon(Icons.add_circle_outline),
-            //   iconSize: 32,
-            //   onPressed: (){},
-            // ),
+            IconButton(
+              icon: Icon(Icons.edit),
+              iconSize: 32,
+              onPressed: (){},
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications_rounded),
+              iconSize: 32,
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RequestPage()));
+              },
+            ),
           ],
         ),
         body: WillPopScope(

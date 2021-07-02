@@ -12,6 +12,10 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  int _limit = 10;
+
+  String query = "";
+
   @override
   void initState() {
     super.initState();
@@ -30,9 +34,36 @@ class _SearchPageState extends State<SearchPage> {
         ),
         title: TextField(
           autofocus: true,
+          onSubmitted: (value){
+            setState(() {
+              query = value;
+            });
+          },
         ),
       ),
-      body: Center(),
+      body: Column(
+        children:
+        [
+          Expanded(
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .limit(_limit)
+                  .where("username",isEqualTo: query).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if(!snapshot.hasData) return LinearProgressIndicator();
+                return ListView(
+                    children: snapshot.data.docs
+                        .map<Widget>((user){
+                          if(user.id == g_User.uid) return Container();
+                      return SearchItem(snapshot: user);
+                    }).toList()
+                );
+              },
+            ),
+          ),
+        ]
+      )
     );
   }
 }
