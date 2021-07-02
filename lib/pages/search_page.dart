@@ -55,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
                 return ListView(
                     children: snapshot.data.docs
                         .map<Widget>((user){
-                          if(user.id == g_User.uid) return Container();
+                          if(user.id == global_User.uid) return Container();
                       return SearchItem(snapshot: user);
                     }).toList()
                 );

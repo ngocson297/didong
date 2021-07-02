@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             .get();
 
         if(snapshot.docs.isNotEmpty){
-          g_User = new UserModel(
+          global_User = new UserModel(
               uid: snapshot.docs.first.id,
               username: snapshot.docs.first.get("username"),
               imgUrl: snapshot.docs.first.get("imageUrl")

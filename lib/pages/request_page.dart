@@ -33,10 +33,10 @@ class _RequestPageState extends State<RequestPage> with TickerProviderStateMixin
           child: StreamBuilder(
             stream: receive? FirebaseFirestore.instance
                 .collection('requests')
-                .where('to',isEqualTo: g_User.uid).snapshots()
+                .where('to',isEqualTo: global_User.uid).snapshots()
                 : FirebaseFirestore.instance
                 .collection('requests')
-                .where('from',isEqualTo: g_User.uid).snapshots(),
+                .where('from',isEqualTo: global_User.uid).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if(!snapshot.hasData) return LinearProgressIndicator();
               return ListView(

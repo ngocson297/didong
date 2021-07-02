@@ -5,7 +5,7 @@ import 'package:flutter_config/flutter_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
+  //await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp();
 
   runApp(MyApp());

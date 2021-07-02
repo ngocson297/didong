@@ -81,7 +81,7 @@ class _ChatMessageState extends State<ChatMessage>{
         future: _loadMessage(),
         builder: (context, AsyncSnapshot<MessageModel> snapshot) {
           if (!snapshot.hasData) return CircularProgressIndicator();
-          bool isUser = snapshot.data.fromUser == g_User.uid;
+          bool isUser = snapshot.data.fromUser == global_User.uid;
           return Container(
             padding: EdgeInsets.all(10),
             child: Row(
