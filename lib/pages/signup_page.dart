@@ -48,8 +48,9 @@ class _SignupPageState extends State<SignupPage> {
         if (snapshot.docs.isEmpty) {
           FirebaseFirestore.instance
               .collection('users')
-              .doc(user.uid)
+              .doc()
               .set({
+            'uid': user.uid,
             'username': _nameTextController.text,
             'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8',
             'chats': [],
