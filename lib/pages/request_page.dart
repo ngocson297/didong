@@ -56,6 +56,7 @@ class _RequestPageState extends State<RequestPage> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Friend Requests"),
         bottom: TabBar(

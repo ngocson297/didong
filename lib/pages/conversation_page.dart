@@ -131,9 +131,9 @@ class _ConversationPageState extends State<ConversationPage> {
   void _selectGif() async {
     var gif = await GiphyPicker.pickGif(
         context: context,
-        apiKey: FlutterConfig.get('GIPHY_KEY')
+        apiKey: 'tsQ4fZW27ou6O7VmFBhz1kCwaiNTAZID'
     );
-
+    // FlutterConfig.get
     if(gif != null){
       _uploadMessage(
         from: g_User.uid,

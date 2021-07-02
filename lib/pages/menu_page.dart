@@ -67,6 +67,23 @@ class _MenuPageState extends State<MenuPage> {
             onTap: _userProfile,
           ),
           ListTile(
+            leading: Icon(Icons.privacy_tip_outlined),
+            title: Text("Privacy"),
+          ),
+          ListTile(
+            leading: Icon(Icons.help_center_outlined),
+            title: Text("Help & Support"),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle_sharp),
+            title: Text("Invite a Friend"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_applications_outlined),
+            title: Text("Setting"),
+            onTap: _userProfile,
+          ),
+          ListTile(
             leading: Icon(Icons.logout),
             title: Text("Sign Out"),
             onTap: _signOut,

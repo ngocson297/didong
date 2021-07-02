@@ -63,6 +63,12 @@ class FriendItem extends StatelessWidget{
                         onPressed: () {
                           _removeFriend(snapshot.data.uid);
                         },
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.deepOrange,
+                            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                            textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
