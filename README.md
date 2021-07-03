@@ -1,5 +1,6 @@
 # flutter_chat_app
 
+Flutter Project.
 - Flutter Project.
 
 ## Getting Started
@@ -11,21 +12,17 @@ The App is still under development so please wait for the fully-featured version
 
 A Chat list app to allow users to communicate and share (Text, Images) with each other.
 
-### Features:
+Features:
 -Send (Text, Images) to your friends all over the world with a simple click.
--A List of Friend requests displayed.
--Users can accept or delete friend requests.
-=View other users' profiles.
+-A List of Friend requests displayed. -Users can accept or delete friend requests.
+-View other users' profiles.
 -Unfriend users added.
 -Notifications.
 -Search feature Added for friends, friend requests, and other users.
 -Simple beautiful UI.
-#### Techs: 
+
+Techs:
 -Flutter.
 -Flutter Local Notifications.
 -Firebase Storage.
 -Firebase Authentication.
-
-
-
-

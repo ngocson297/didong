@@ -39,31 +39,40 @@ class FriendItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-      future: _loadUser(),
-      builder: (context, AsyncSnapshot<UserModel> snapshot) {
-        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-        return InkWell(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-              ),
-              child: ListTile(
-                leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data.imgUrl), radius: 28,),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      snapshot.data.username,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+        future: _loadUser(),
+        builder: (context, AsyncSnapshot<UserModel> snapshot) {
+          if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
+          return InkWell(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                ),
+                child: ListTile(
+                  leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.data.imgUrl), radius: 28,),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        snapshot.data.username,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    ElevatedButton(
-                      child: Text("Unfriend"),
-                      onPressed: () {
-                        _removeFriend(snapshot.data.uid);
-                      },
+                      ElevatedButton(
+                        child: Text("Unfriend"),
+                        onPressed: () {
+                          _removeFriend(snapshot.data.uid);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepOrange,
+                          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                          textStyle: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                           )
+                        ),
+                      ),
                     ),
                   ],
                 ),

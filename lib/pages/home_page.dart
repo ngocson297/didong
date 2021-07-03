@@ -122,6 +122,7 @@ class _HomePageState extends State<HomePage> {
       length: 3,
       initialIndex: 0,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.deepOrange,
           leading: InkWell(
