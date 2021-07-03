@@ -8,6 +8,7 @@ import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/src/widgets/basic.dart';
 
 class SignupPage extends StatefulWidget {
   SignupPage({Key key}) : super(key: key);
@@ -120,29 +121,95 @@ class _SignupPageState extends State<SignupPage> {
                   icon: Icon(Icons.account_circle_rounded),
                   // border: OutlineInputBorder(),
                   fillColor: Colors.deepOrange,
-                  labelText: 'User Name',
+                  labelText: 'Username',
                   hintText: 'Enter Create Your User Name',
+                ),
+                cursorColor: Colors.deepOrange,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                autofocus: true,
+                controller: _emailTextController,
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  icon: Icon(Icons.email_outlined),
+                  // border: OutlineInputBorder(),
+                  fillColor: Colors.deepOrange,
+                  labelText: 'Email',
+                  hintText: 'Enter Create Your Email',
                 ),
                 cursorColor: Colors.deepOrange,
               ),
 
             ),
-            TextField(
-              controller: _nameTextController,
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                autofocus: true,
+                controller:  _passwordTextController,
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  icon: Icon(Icons.lock_clock_outlined),
+                  // border: OutlineInputBorder(),
+                  fillColor: Colors.deepOrange,
+                  labelText: 'Password',
+                  hintText: 'Enter Create Your Password',
+                ),
+                cursorColor: Colors.deepOrange,
+              ),
+
             ),
-            TextField(
-              controller: _emailTextController,
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                autofocus: true,
+                controller: _verifyTextController,
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  icon: Icon(Icons.password_outlined),
+                  // border: OutlineInputBorder(),
+                  fillColor: Colors.deepOrange,
+                  labelText: 'Confirm',
+                  hintText: 'Retype to confirm',
+                ),
+                cursorColor: Colors.deepOrange,
+              ),
             ),
-            TextField(
-              controller: _passwordTextController,
-              obscureText: true,
-            ),
-            TextField(
-              controller: _verifyTextController,
-              obscureText: true,
-            ),
+
             ElevatedButton(
-              child: Text("SIGNUP"),
+              child: Text("SIGN UP"),
+              style: ElevatedButton.styleFrom(
+              primary: Colors.deepOrange,
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              textStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold)),
               onPressed: _signup,
             ),
             InkWell(

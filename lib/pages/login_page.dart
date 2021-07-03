@@ -127,13 +127,19 @@ Widget build(BuildContext context) {
                 padding: EdgeInsets.all(25),
                 child: Text('Sign In',
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 32,
-                    color: Colors.deepOrange,
-                    fontFamily: 'RobotoMono',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 55,
+                  color: Colors.deepOrange,
+                  fontFamily: 'Festive',
+                  shadows: [
+                    Shadow(
+                      color: Colors.deepOrange,
+                      blurRadius: 10.0,
+                      offset: Offset(5.0, 5.0),
+                    ),
+                  ]),
                 ),
                 ),
-              ),
               Padding(
                 padding: EdgeInsets.all(15),
                 child: TextField(
@@ -184,7 +190,6 @@ Widget build(BuildContext context) {
                   cursorColor: Colors.deepOrange,
                 ),
               ),
-
               ElevatedButton(
                 child: Text("LOGIN",
                   textAlign: TextAlign.center,
