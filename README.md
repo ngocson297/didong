@@ -3,7 +3,7 @@
 ## Giới Thiệu
 Flutter Chat App là ứng dụng chat với các tính năng cơ bản, cần thiết, được xây dựng với Flutter.
 
-## Chức năng:
+## Chức năng
 1. Gửi tin nhắn, hình ảnh, GIF
 2. Tìm kiếm người dùng
 3. Xem profile người dùng
@@ -16,7 +16,7 @@ Flutter Chat App là ứng dụng chat với các tính năng cơ bản, cần t
 - Android 5.0 hoặc cao hơn
 - Có khả năng kết nối Internet
 
-## Thư viện và công nghệ:
+## Thư viện và công nghệ
 ### Thư viện
 - firebase_auth
 - cloud_firestore
@@ -30,7 +30,7 @@ Flutter Chat App là ứng dụng chat với các tính năng cơ bản, cần t
 - fluttertoast
 - introduction_screen
 
-### Công nghệ:
+### Công nghệ
 - Flutter
 - Firebase
 
