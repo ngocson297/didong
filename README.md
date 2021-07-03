@@ -37,7 +37,7 @@ Flutter Chat App là ứng dụng chat với đầy đủ các tính năng cần
 ## Backend/Database/Diagram
 + Backend: Sử dụng Firebase làm backend của ứng dụng
 + Database/Diagram:
-![alt text]()
+![alt text](https://github.com/ngocson297/didong/blob/master/diagram.png)
 
 ## Tác giả
 + Nguyễn Ngọc Sơn, 18521350
