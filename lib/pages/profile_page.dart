@@ -15,123 +15,128 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
-  bool _isFriend = false;
-  bool _isSent = false;
-  bool _isReceived = false;
-
-
-  Future<UserModel> _loadUser() async{
+  Future<UserModel> _loadUser() async {
     var doc = await FirebaseFirestore.instance
         .collection('users')
         .doc(widget.id)
         .get();
 
     return UserModel(
-        uid: doc.id,
-        username: doc.get('username'),
-        imgUrl: doc.get('imageUrl'),
-        info: doc.get('info'),
+      uid: doc.id,
+      username: doc.get('username'),
+      imgUrl: doc.get('imageUrl'),
+      info: doc.get('info'),
     );
   }
 
-  void _openChat(UserModel user) async{
-    var snapshot =  await FirebaseFirestore.instance
+  void _openChat(UserModel user) async {
+    var snapshot = await FirebaseFirestore.instance
         .collection('chats')
         .where('users', arrayContains: global_User.uid)
         .get();
     var chat = null;
-    if(snapshot.docs.isNotEmpty){
-      for(var doc in snapshot.docs){
-        if(doc.get('users').contains(widget.id)){
+    if (snapshot.docs.isNotEmpty) {
+      for (var doc in snapshot.docs) {
+        if (doc.get('users').contains(widget.id)) {
           chat = doc;
           break;
         }
       }
     }
-    if(chat == null){
-      chat = FirebaseFirestore.instance
-          .collection('chats')
-          .doc();
+    if (chat == null) {
+      chat = FirebaseFirestore.instance.collection('chats').doc();
 
-      chat.set({
+      await chat.set({
         'chatName': '',
         'chatImage': '',
         'group': false,
         'latestMsg': '',
-        'time': Timestamp(0,0),
+        'time': Timestamp(0, 0),
         'users': [global_User.uid, widget.id],
       });
     }
-    print(user.username);
-    print(chat.id);
-    print(chat.get('users'));
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ConversationPage(title: user.username,id: chat.id,users: chat.get('users'))));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConversationPage(
+                title: user.username,
+                id: chat.id,
+                users: [global_User.uid, widget.id])));
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-            color: Colors.black
-        ),
+        leading: BackButton(color: Colors.black),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
       ),
       body: FutureBuilder<UserModel>(
           future: _loadUser(),
-            builder: (context, AsyncSnapshot<UserModel> snapshot) {
-              if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-              return ConstrainedBox(
-                  constraints: BoxConstraints.tightFor(
-                    width: double.infinity,
+          builder: (context, AsyncSnapshot<UserModel> snapshot) {
+            if (!snapshot.hasData)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            return ConstrainedBox(
+              constraints: BoxConstraints.tightFor(
+                width: double.infinity,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(snapshot.data.imgUrl),
+                    radius: 54,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircleAvatar(backgroundImage: NetworkImage(snapshot.data.imgUrl), radius: 54,),
-                      SizedBox(height: 20,),
-                      Text(
-                        snapshot.data.username,
-                        style: TextStyle(
-                          fontSize: 28,
-                        ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    snapshot.data.username,
+                    style: TextStyle(
+                      fontSize: 28,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  if (snapshot.data.info != '')
+                    Text(
+                      '\"' + snapshot.data.info + '\"',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                      SizedBox(height: 20,),
-                      if(snapshot.data.info != '') Text(
-                        '\"' + snapshot.data.info + '\"',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      if(widget.id != global_User.uid) Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: (){
-                            _openChat(snapshot.data);
+                    ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  if (widget.id != global_User.uid)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              _openChat(snapshot.data);
                             },
                             child: Row(
                               children: [
                                 Icon(Icons.messenger_rounded),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Text('Start Chat'),
                               ],
-                            )
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-            }
-        ),
+                            )),
+                      ],
+                    )
+                ],
+              ),
+            );
+          }),
     );
   }
 }

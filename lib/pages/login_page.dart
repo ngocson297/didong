@@ -23,44 +23,41 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordTextController = TextEditingController();
 
   void _login() async {
-    if(_loading) return;
+    if (_loading) return;
     setState(() {
       _loading = true;
     });
-    try{
+    try {
       final user = (await _firebaseAuth.signInWithEmailAndPassword(
-          email: _emailTextController.text,
-          password: _passwordTextController.text)
-      ).user;
+              email: _emailTextController.text,
+              password: _passwordTextController.text))
+          .user;
 
-      if(user != null){
+      if (user != null) {
         final QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('users')
-            .where("uid",isEqualTo: user.uid)
+            .where("uid", isEqualTo: user.uid)
             .get();
 
-        if(snapshot.docs.isNotEmpty){
+        if (snapshot.docs.isNotEmpty) {
           global_User = new UserModel(
-              uid: snapshot.docs.first.id,
-              username: snapshot.docs.first.get("username"),
-              imgUrl: snapshot.docs.first.get("imageUrl"),
-              info: snapshot.docs.first.get('info'),
+            uid: snapshot.docs.first.id,
+            username: snapshot.docs.first.get("username"),
+            imgUrl: snapshot.docs.first.get("imageUrl"),
+            info: snapshot.docs.first.get('info'),
           );
 
           Fluttertoast.showToast(msg: "Login success");
 
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => HomePage()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
         }
-      }
-      else{
+      } else {
         throw "User not found";
       }
-    }
-    catch(e){
+    } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
-    }
-    finally{
+    } finally {
       setState(() {
         _loading = false;
       });
@@ -107,111 +104,109 @@ class _LoginPageState extends State<LoginPage> {
 //   }
 // }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        // title: Text('Login'),
-          title: Align (
-              child: Text("Login"),
-              alignment: Alignment.center
-          )
-      ),
-      body: Padding(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(25),
-                child: Text('Sign In',
-                  style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 55,
-                  color: Colors.deepOrange,
-                  fontFamily: 'Festive',
-                  shadows: [
-                    Shadow(
-                      color: Colors.deepOrange,
-                      blurRadius: 10.0,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                  ]),
-                ),
-                ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  autofocus: true,
-                  controller: _emailTextController,
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepOrange),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepOrange),
-                    ),
-                    icon: Icon(Icons.account_circle_rounded),
-                    // border: OutlineInputBorder(),
-                    fillColor: Colors.deepOrange,
-                    labelText: 'User Name',
-                    hintText: 'Enter Your Name',
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+            backgroundColor: Colors.deepOrange,
+            // title: Text('Login'),
+            title: Align(child: Text("Login"), alignment: Alignment.center)),
+        body: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Text(
+                    'Sign In',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 55,
+                        color: Colors.deepOrange,
+                        fontFamily: 'Festive',
+                        shadows: [
+                          Shadow(
+                            color: Colors.deepOrange,
+                            blurRadius: 10.0,
+                            offset: Offset(5.0, 5.0),
+                          ),
+                        ]),
                   ),
-                  cursorColor: Colors.deepOrange,
                 ),
-
-              ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  autofocus: true,
-                  controller: _passwordTextController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepOrange),
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: TextField(
+                    autofocus: true,
+                    controller: _emailTextController,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepOrange),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepOrange),
+                      ),
+                      icon: Icon(Icons.account_circle_rounded),
+                      // border: OutlineInputBorder(),
+                      fillColor: Colors.deepOrange,
+                      labelText: 'User Name',
+                      hintText: 'Enter Your Name',
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepOrange),
-                    ),
-                    icon: Icon(Icons.lock_outline),
-                    // border: OutlineInputBorder(),
-                    fillColor: Colors.deepOrange,
-                    labelText: 'Password',
-                    hintText: 'Enter Password',
+                    cursorColor: Colors.deepOrange,
                   ),
-                  cursorColor: Colors.deepOrange,
                 ),
-              ),
-              ElevatedButton(
-                child: Text("LOGIN",
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: TextField(
+                    autofocus: true,
+                    controller: _passwordTextController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepOrange),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepOrange),
+                      ),
+                      icon: Icon(Icons.lock_outline),
+                      // border: OutlineInputBorder(),
+                      fillColor: Colors.deepOrange,
+                      labelText: 'Password',
+                      hintText: 'Enter Password',
+                    ),
+                    cursorColor: Colors.deepOrange,
+                  ),
                 ),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.deepOrange,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                    textStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold)),
-                    onPressed: _login,
-              ),
-              InkWell(
-                child: Text("Don't have Account? Sign up!"),
-                onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => SignupPage()));
-                },
-              )
-            ],
-          )
-      )
-  );
-}
+                ElevatedButton(
+                  child: Text(
+                    "LOGIN",
+                    textAlign: TextAlign.center,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.deepOrange,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  onPressed: _login,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                InkWell(
+                  child: Text("Don't have Account? Sign up!"),
+                  onTap: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => SignupPage()));
+                  },
+                )
+              ],
+            )));
+  }
 }

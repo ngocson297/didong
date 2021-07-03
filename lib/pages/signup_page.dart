@@ -27,60 +27,58 @@ class _SignupPageState extends State<SignupPage> {
   final _verifyTextController = TextEditingController();
 
   void _signup() async {
-    if(_loading) return
-    setState(() {
-      _loading = true;
-    });
+    if (_loading)
+      return setState(() {
+        _loading = true;
+      });
 
-    try{
-      if(_passwordTextController.text != _verifyTextController.text) throw "Password not match";
+    try {
+      if (_passwordTextController.text != _verifyTextController.text)
+        throw "Password not match";
 
       final user = (await _firebaseAuth.createUserWithEmailAndPassword(
-          email: _emailTextController.text,
-          password: _passwordTextController.text)
-      ).user;
+              email: _emailTextController.text,
+              password: _passwordTextController.text))
+          .user;
 
-      if(user != null) {
+      if (user != null) {
         final QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('users')
             .where("uid", isEqualTo: user.uid)
             .get();
 
         if (snapshot.docs.isEmpty) {
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc()
-              .set({
-            'uid': user.uid,
+          var doc = FirebaseFirestore.instance.collection('users').doc();
+
+          await doc.set({
+            'uid': doc.id,
             'username': _nameTextController.text,
-            'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8',
+            'imageUrl':
+                'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8',
             'info': '',
             'chats': [],
             'friends': [],
           });
 
           global_User = new UserModel(
-              uid: user.uid,
+              uid: doc.id,
               username: _nameTextController.text,
-              imgUrl: 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8'
-          );
+              imgUrl:
+                  'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8');
 
           Fluttertoast.showToast(msg: "Sign up success");
 
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => HomePage()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
 
           return;
         }
-      }
-      else{
+      } else {
         throw "User already exist";
       }
-    }
-    catch(e){
+    } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
-    }
-    finally{
+    } finally {
       setState(() {
         _loading = false;
       });
@@ -92,135 +90,133 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-          title: Align (
-              child: Text("Login"),
-              alignment: Alignment.center
-          )
-      ),
+          backgroundColor: Colors.deepOrange,
+          title: Align(child: Text("Login"), alignment: Alignment.center)),
       body: Center(
-        child: _loading?
-        CircularProgressIndicator()
-        : Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                autofocus: true,
-                controller: _nameTextController,
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
+        child: _loading
+            ? CircularProgressIndicator()
+            : Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _nameTextController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        icon: Icon(Icons.account_circle_rounded),
+                        // border: OutlineInputBorder(),
+                        fillColor: Colors.deepOrange,
+                        labelText: 'Username',
+                        hintText: 'Enter Your User Name',
+                      ),
+                      cursorColor: Colors.deepOrange,
+                    ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _emailTextController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        icon: Icon(Icons.email_outlined),
+                        // border: OutlineInputBorder(),
+                        fillColor: Colors.deepOrange,
+                        labelText: 'Email',
+                        hintText: 'Enter Your Email',
+                      ),
+                      cursorColor: Colors.deepOrange,
+                    ),
                   ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _passwordTextController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        icon: Icon(Icons.lock_clock_outlined),
+                        // border: OutlineInputBorder(),
+                        fillColor: Colors.deepOrange,
+                        labelText: 'Password',
+                        hintText: 'Enter Your Password',
+                      ),
+                      cursorColor: Colors.deepOrange,
+                      obscureText: true,
+                    ),
                   ),
-                  icon: Icon(Icons.account_circle_rounded),
-                  // border: OutlineInputBorder(),
-                  fillColor: Colors.deepOrange,
-                  labelText: 'Username',
-                  hintText: 'Enter Create Your User Name',
-                ),
-                cursorColor: Colors.deepOrange,
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _verifyTextController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        icon: Icon(Icons.password_outlined),
+                        // border: OutlineInputBorder(),
+                        fillColor: Colors.deepOrange,
+                        labelText: 'Confirm',
+                        hintText: 'Retype to confirm',
+                      ),
+                      cursorColor: Colors.deepOrange,
+                      obscureText: true,
+                    ),
+                  ),
+                  ElevatedButton(
+                    child: Text("SIGN UP"),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.deepOrange,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                        textStyle: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    onPressed: _signup,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    child: Text("Already have Account? Login!"),
+                    onTap: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                  )
+                ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                autofocus: true,
-                controller: _emailTextController,
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  icon: Icon(Icons.email_outlined),
-                  // border: OutlineInputBorder(),
-                  fillColor: Colors.deepOrange,
-                  labelText: 'Email',
-                  hintText: 'Enter Create Your Email',
-                ),
-                cursorColor: Colors.deepOrange,
-              ),
-
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                autofocus: true,
-                controller:  _passwordTextController,
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  icon: Icon(Icons.lock_clock_outlined),
-                  // border: OutlineInputBorder(),
-                  fillColor: Colors.deepOrange,
-                  labelText: 'Password',
-                  hintText: 'Enter Create Your Password',
-                ),
-                cursorColor: Colors.deepOrange,
-              ),
-
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                autofocus: true,
-                controller: _verifyTextController,
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrange),
-                  ),
-                  icon: Icon(Icons.password_outlined),
-                  // border: OutlineInputBorder(),
-                  fillColor: Colors.deepOrange,
-                  labelText: 'Confirm',
-                  hintText: 'Retype to confirm',
-                ),
-                cursorColor: Colors.deepOrange,
-              ),
-            ),
-
-            ElevatedButton(
-              child: Text("SIGN UP"),
-              style: ElevatedButton.styleFrom(
-              primary: Colors.deepOrange,
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              textStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold)),
-              onPressed: _signup,
-            ),
-            InkWell(
-              child: Text("Already have Account? Login!"),
-              onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => LoginPage()));
-              },
-            )
-          ],
-        ),
       ),
     );
   }
