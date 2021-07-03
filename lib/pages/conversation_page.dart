@@ -84,7 +84,7 @@ class _ConversationPageState extends State<ConversationPage> {
     _textEditingController.clear();
 
     _uploadMessage(
-      from: g_User.uid,
+      from: global_User.uid,
       to: widget.id,
       url: "",
       time: Timestamp.now(),
@@ -97,27 +97,28 @@ class _ConversationPageState extends State<ConversationPage> {
 
   void _selectPhoto(String choice) async {
     PickedFile pickedFile = await ImagePicker().getImage(
-      source: choice == "Take Photo"? ImageSource.camera: ImageSource.gallery,
-      imageQuality: 1,
+      source: choice == "Take Photo" ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 25,
     );
 
     String fileName = path.basename(pickedFile.path);
     File imageFile = File(pickedFile.path);
 
     if (pickedFile != null) {
-      var storageRef = FirebaseStorage.instance.ref().child('chats/${widget.id}/${fileName}');
+      var storageRef = FirebaseStorage.instance.ref().child(
+          'chats/${widget.id}/${fileName}');
 
       var uploadTask = storageRef.putFile(
         imageFile,
         SettableMetadata(customMetadata: {
-          'uploaded_by': g_User.uid,
+          'uploaded_by': global_User.uid,
         }),
       );
-      await uploadTask.whenComplete((){
+      await uploadTask.whenComplete(() {
         storageRef.getDownloadURL().then((url) {
           print(url);
           _uploadMessage(
-            from: g_User.uid,
+            from: global_User.uid,
             to: widget.id,
             url: url,
             time: Timestamp.now(),
@@ -131,12 +132,12 @@ class _ConversationPageState extends State<ConversationPage> {
   void _selectGif() async {
     var gif = await GiphyPicker.pickGif(
         context: context,
-        apiKey: 'tsQ4fZW27ou6O7VmFBhz1kCwaiNTAZID'
+        apiKey: global_giphy_key
     );
     // FlutterConfig.get
     if(gif != null){
       _uploadMessage(
-        from: g_User.uid,
+        from: global_User.uid,
         to: widget.id,
         url: gif.images.original.url,
         time: Timestamp.now(),

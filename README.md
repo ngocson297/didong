@@ -1,12 +1,9 @@
 # flutter_chat_app
 
 Flutter Project.
+- Flutter Project.
+
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
 A full functional Chat app to allow users to communicate and share (Text, Images) with each other. built using Flutter
 
 This app is an open-source project.

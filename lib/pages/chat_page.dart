@@ -33,7 +33,8 @@ class _ChatPageState extends State<ChatPage> {
               stream: FirebaseFirestore.instance
                   .collection("chats")
                   .limit(_limit)
-                  .where("users", arrayContains: g_User.uid).snapshots(),
+                  .where("users", arrayContains: global_User.uid)
+                  .orderBy('time',descending: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if(!snapshot.hasData) return LinearProgressIndicator();
                 return ListView(
