@@ -34,7 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return UserModel(
         uid: doc.id,
         username: doc.get('username'),
-        imgUrl: doc.get('imageUrl')
+        imgUrl: doc.get('imageUrl'),
+        info: doc.get('info'),
     );
   }
 
@@ -103,6 +104,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         snapshot.data.username,
                         style: TextStyle(
                           fontSize: 28,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      if(snapshot.data.info != '') Text(
+                        '\"' + snapshot.data.info + '\"',
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
                       ),
                       SizedBox(height: 20,),

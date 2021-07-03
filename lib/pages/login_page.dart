@@ -43,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
           global_User = new UserModel(
               uid: snapshot.docs.first.id,
               username: snapshot.docs.first.get("username"),
-              imgUrl: snapshot.docs.first.get("imageUrl")
+              imgUrl: snapshot.docs.first.get("imageUrl"),
+              info: snapshot.docs.first.get('info'),
           );
 
           Fluttertoast.showToast(msg: "Login success");
