@@ -22,7 +22,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -34,13 +35,13 @@ class _HomePageState extends State<HomePage> {
 
   DateTime _currentBackPressTime;
 
-  void _loadAppKey(){
+  void _loadAppKey() {
     var storageRef = FirebaseStorage.instance.ref();
     var giphyRef = storageRef.child('key/giphy_key.txt');
-    giphyRef.getDownloadURL().then((url){
+    giphyRef.getDownloadURL().then((url) {
       http.get(Uri.parse(url)).then((value) {
         global_giphy_key = value.body.toString();
-        print('GIPHY: '+ global_giphy_key);
+        print('GIPHY: ' + global_giphy_key);
       });
     });
   }
@@ -49,12 +50,12 @@ class _HomePageState extends State<HomePage> {
     _firebaseMessaging.requestPermission();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('onMessage: '+ message.notification.title);
+      print('onMessage: ' + message.notification.title);
       _showNotification(message.notification);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('onMessageOpenedApp: '+ message.notification.title);
+      print('onMessageOpenedApp: ' + message.notification.title);
     });
 
     _firebaseMessaging.getToken().then((token) {
@@ -69,7 +70,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showNotification(RemoteNotification remoteNotification) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
       'com.lttbdd.flutter_chat_app',
       'Flutter chat app',
       'description',
@@ -78,11 +80,11 @@ class _HomePageState extends State<HomePage> {
       importance: Importance.max,
       priority: Priority.high,
     );
-    IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    IOSNotificationDetails iOSPlatformChannelSpecifics =
+        IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics
-    );
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
 
     print(remoteNotification);
 
@@ -96,12 +98,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _initLocalNotification() {
-    AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings();
+    AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
     InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS
-    );
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -119,18 +121,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       initialIndex: 0,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.deepOrange,
           leading: InkWell(
             child: Padding(
               padding: EdgeInsets.all(6),
-              child: CircleAvatar(backgroundImage: NetworkImage(global_User.imgUrl)),
+              child: CircleAvatar(
+                  backgroundImage: NetworkImage(global_User.imgUrl)),
             ),
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MenuPage()));
             },
           ),
           title: Text(global_User.username),
@@ -138,8 +143,9 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: Icon(Icons.notifications_rounded),
               iconSize: 32,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RequestPage()));
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RequestPage()));
               },
             ),
           ],
@@ -149,7 +155,7 @@ class _HomePageState extends State<HomePage> {
           child: TabBarView(
             children: const [
               ChatPage(),
-              ChatPage(),
+              // ChatPage(),
               FriendPage(),
             ],
           ),
@@ -161,10 +167,10 @@ class _HomePageState extends State<HomePage> {
           labelColor: Colors.deepOrange,
           unselectedLabelColor: Colors.black12,
           tabs: [
-            Tab(
-              icon: Icon(Icons.home),
-              text: "Home",
-            ),
+            // Tab(
+            //   icon: Icon(Icons.home),
+            //   text: "Home",
+            // ),
             Tab(
               icon: Icon(Icons.message),
               text: "Chats",
@@ -174,7 +180,6 @@ class _HomePageState extends State<HomePage> {
               text: "Friends",
             ),
           ],
-
         ),
       ),
     );

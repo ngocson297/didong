@@ -8,10 +8,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+      home: OnBoardingPage(),
     );
   }
 }

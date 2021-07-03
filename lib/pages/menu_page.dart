@@ -24,16 +24,21 @@ class _MenuPageState extends State<MenuPage> {
   void _signOut() {
     FirebaseAuth.instance.signOut().then((value) {
       Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     });
   }
 
-  void _userProfile(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(id: global_User.uid)));
+  void _userProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProfilePage(id: global_User.uid)));
   }
 
-  void _userAccount(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage()));
+  void _userAccount() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AccountPage()));
   }
 
   @override
@@ -55,7 +60,9 @@ class _MenuPageState extends State<MenuPage> {
                   backgroundImage: NetworkImage(global_User.imgUrl),
                   radius: 54,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
                   global_User.username,
                   style: TextStyle(
@@ -70,6 +77,22 @@ class _MenuPageState extends State<MenuPage> {
             leading: Icon(Icons.person_rounded),
             title: Text("Profile"),
             onTap: _userProfile,
+          ),
+          ListTile(
+            leading: Icon(Icons.privacy_tip_outlined),
+            title: Text("Privacy"),
+          ),
+          ListTile(
+            leading: Icon(Icons.help_center_outlined),
+            title: Text("Help & Support"),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle_sharp),
+            title: Text("Invite a Friend"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_applications_outlined),
+            title: Text("Setting"),
           ),
           ListTile(
             leading: Icon(Icons.account_circle_sharp),

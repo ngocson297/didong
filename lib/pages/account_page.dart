@@ -38,8 +38,8 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Stream<bool> _changes() async* {
-    setState((){});
     yield (_imageFile != null || _usernameControler.text != global_User.username || _infoControler.text != global_User.info);
+    setState((){});
     await Future<void>.delayed(const Duration(seconds: 2));
   }
 
@@ -113,7 +113,7 @@ class _AccountPageState extends State<AccountPage> {
       body: StreamBuilder(
         stream: _changes(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.hasError) return Container();
+          if (snapshot.hasError || !snapshot.hasData) return Container();
           return ConstrainedBox(
             constraints: BoxConstraints.tightFor(
               width: double.infinity,

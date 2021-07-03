@@ -89,14 +89,44 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Login"),
+        backgroundColor: Colors.deepOrange,
+          title: Align (
+              child: Text("Login"),
+              alignment: Alignment.center
+          )
       ),
       body: Center(
         child: _loading?
         CircularProgressIndicator()
         : Column(
           children: [
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                autofocus: true,
+                controller: _nameTextController,
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrange),
+                  ),
+                  icon: Icon(Icons.account_circle_rounded),
+                  // border: OutlineInputBorder(),
+                  fillColor: Colors.deepOrange,
+                  labelText: 'User Name',
+                  hintText: 'Enter Create Your User Name',
+                ),
+                cursorColor: Colors.deepOrange,
+              ),
+
+            ),
             TextField(
               controller: _nameTextController,
             ),
