@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class AccountPage extends StatefulWidget{
   const AccountPage({Key key}) : super(key: key);
@@ -19,6 +24,9 @@ class _AccountPageState extends State<AccountPage> {
   TextEditingController _infoControler = TextEditingController();
   String _imageUrl;
 
+  File _imageFile;
+
+  var _menuOption = ['Take Photo','Pick Photo'];
 
 
   @override
@@ -31,17 +39,47 @@ class _AccountPageState extends State<AccountPage> {
 
   Stream<bool> _changes() async* {
     setState((){});
-    yield (_imageUrl != global_User.imgUrl || _usernameControler.text != global_User.username || _infoControler.text != global_User.info);
+    yield (_imageFile != null || _usernameControler.text != global_User.username || _infoControler.text != global_User.info);
     await Future<void>.delayed(const Duration(seconds: 2));
+  }
+
+  void _selectPhoto(String choice) async{
+    PickedFile pickedFile = await ImagePicker().getImage(
+      source: choice == "Take Photo" ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 25,
+    );
+    
+    if(_imageFile != null) _imageFile.delete();
+    _imageFile = File(pickedFile.path);
   }
 
   void _cancel(){
     _imageUrl = global_User.imgUrl;
     _usernameControler.text = global_User.username;
     _infoControler.text = global_User.info;
+
+    if(_imageFile != null){
+      _imageFile.delete();
+      _imageFile = null;
+    }
   }
 
   void _saveChanges() async{
+    if (_imageFile != null) {
+      var storageRef = FirebaseStorage.instance.ref().child(
+          'users/${global_User.uid}.jpg');
+
+      var uploadTask = storageRef.putFile(
+        _imageFile,
+        SettableMetadata(customMetadata: {
+          'uploaded_by': global_User.uid,
+        }),
+      );
+      await uploadTask.whenComplete(() async {
+        _imageUrl = await storageRef.getDownloadURL();
+      });
+    }
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(global_User.uid)
@@ -57,6 +95,11 @@ class _AccountPageState extends State<AccountPage> {
       imgUrl: _imageUrl,
       info: _infoControler.text,
     );
+
+    if(_imageFile != null){
+      _imageFile.delete();
+      _imageFile = null;
+    }
 
     Fluttertoast.showToast(msg: "Account Updated");
   }
@@ -82,14 +125,36 @@ class _AccountPageState extends State<AccountPage> {
                   child: Column(
                     children: [
                       if(_imageUrl != null) CircleAvatar(
-                        backgroundImage: NetworkImage(_imageUrl),
+                        backgroundImage: _imageFile == null ? NetworkImage(_imageUrl) : Image.file(_imageFile).image,
                         radius: 48,
                       ),
                       SizedBox(height: 10,),
-                      ElevatedButton(
-                        child: Text('Change Avatar'),
-                        onPressed: (){},
+                      PopupMenuButton(
+                        child:  Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.all(Radius.circular(4))
+                          ),
+                          child: Text(
+                            'Change Avatar',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            ),
+                          ),
+                        ),
+                        onSelected: _selectPhoto,
+                        itemBuilder: (BuildContext context) {
+                          return _menuOption.map((String choice) {
+                            return  PopupMenuItem<String>(
+                              value: choice,
+                              child: Text(choice),
+                            );}
+                          ).toList();
+                        },
                       ),
+
                       SizedBox(height: 40,),
                       TextField(
                         controller: _usernameControler,
