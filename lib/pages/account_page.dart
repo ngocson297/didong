@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/ults/global.dart';
+import 'package:flutter_chat_app/ults/ults.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
 
 class AccountPage extends StatefulWidget{
   const AccountPage({Key key}) : super(key: key);
@@ -80,6 +80,8 @@ class _AccountPageState extends State<AccountPage> {
       });
     }
 
+    var keywords = generateKeywords(_usernameControler.text);
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(global_User.uid)
@@ -87,6 +89,7 @@ class _AccountPageState extends State<AccountPage> {
           'username': _usernameControler.text,
           'info': _infoControler.text,
           'imageUrl': _imageUrl,
+          'keywords': keywords,
         });
 
     global_User = UserModel(

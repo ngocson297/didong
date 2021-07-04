@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_app/pages/account_page.dart';
 import 'package:flutter_chat_app/pages/login_page.dart';
 import 'package:flutter_chat_app/pages/profile_page.dart';
-import 'package:flutter_chat_app/pages/widgets/search_widget.dart';
 import 'package:flutter_chat_app/ults/global.dart';
-import 'package:flutter_chat_app/pages/widgets/chat_widget.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key key}) : super(key: key);

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
 import 'package:flutter_chat_app/pages/signup_page.dart';
-import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -63,46 +62,6 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Login"),
-//       ),
-//       body: Center(
-//         child: _loading?
-//         CircularProgressIndicator()
-//         : Column(
-//           children: [
-//             TextField(
-//               controller: _emailTextController,
-//             ),
-//             TextField(
-//               controller: _passwordTextController,
-//               obscureText: true,
-//               decoration: InputDecoration(
-//                 border: OutlineInputBorder(),
-//                 labelText: 'Password',
-//
-//               ),
-//             ),
-//             ElevatedButton(
-//               child: Text("LOGIN",
-//               textAlign: TextAlign.center,
-//               ),
-//               onPressed: _login,
-//             ),
-//             InkWell(
-//               child: Text("Don't have Account? Sign up!"),
-//               onTap: () {},
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
   @override
   Widget build(BuildContext context) {

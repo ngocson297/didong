@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:giphy_picker/giphy_picker.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 
 class ConversationPage extends StatefulWidget {

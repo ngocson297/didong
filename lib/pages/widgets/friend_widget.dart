@@ -54,24 +54,23 @@ class FriendItem extends StatelessWidget {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        snapshot.data.username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      Expanded(
+                        child:Text(
+                          snapshot.data.username,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                      ),
+                      ),                      
                       ElevatedButton(
                         child: Text("Unfriend"),
                         onPressed: () {
                           _removeFriend(snapshot.data.uid);
                         },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.deepOrange,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 10),
-                            textStyle: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),

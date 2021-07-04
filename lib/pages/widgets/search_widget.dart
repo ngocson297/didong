@@ -157,13 +157,18 @@ class _SearchItemState extends State<SearchItem>{
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.snapshot.get("username"),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      Expanded(
+                        child: Text(
+                          widget.snapshot.get("username"),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                      ),
+                      )
+                      ,
                       ElevatedButton(
                         child: Text(_added ? "Added" : _sent? "Sent" : _received ? "Accept" : "Request"),
                         onPressed: _added || _sent ? null

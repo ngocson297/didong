@@ -4,9 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
 import 'package:flutter_chat_app/pages/login_page.dart';
-import 'package:flutter_chat_app/pages/widgets/login_widget.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_chat_app/ults/global.dart';
+import 'package:flutter_chat_app/ults/ults.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/src/widgets/basic.dart';
 
@@ -48,15 +47,17 @@ class _SignupPageState extends State<SignupPage> {
             .get();
 
         if (snapshot.docs.isEmpty) {
+          var keywords = generateKeywords(_nameTextController.text);
+
           var doc = FirebaseFirestore.instance.collection('users').doc();
 
           await doc.set({
-            'uid': doc.id,
+            'uid': user.uid,
             'username': _nameTextController.text,
             'imageUrl':
                 'https://firebasestorage.googleapis.com/v0/b/mndd-44ec5.appspot.com/o/default_avatar.png?alt=media&token=36f3e70d-7605-4936-b4b3-5a3602934ff8',
             'info': '',
-            'chats': [],
+            'keywords': keywords,
             'friends': [],
           });
 

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/pages/widgets/search_widget.dart';
 import 'package:flutter_chat_app/ults/global.dart';
 import 'package:flutter_chat_app/pages/widgets/chat_widget.dart';
+import 'package:flutter_chat_app/ults/ults.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);
@@ -36,6 +38,10 @@ class _SearchPageState extends State<SearchPage> {
         title: TextField(
           autofocus: true,
           onSubmitted: (value){
+            if(value.length < 3){
+              Fluttertoast.showToast(msg: "Keyword must contain 3 or more characters");
+              return;
+            }
             setState(() {
               query = value;
             });
@@ -50,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
               stream: FirebaseFirestore.instance
                   .collection("users")
                   .limit(_limit)
-                  .where("username",isEqualTo: query).snapshots(),
+                  .where("keywords", arrayContains: query).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if(!snapshot.hasData) return LinearProgressIndicator();
                 return ListView(
