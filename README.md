@@ -4,9 +4,9 @@
 Flutter Chat App là ứng dụng chat với các tính năng cơ bản, cần thiết, được xây dựng với Flutter.
 
 ## ScreenShot
-![alt-text](https://github.com/ngocson297/didong/blob/master/5.PNG)  
-![alt-text](https://github.com/ngocson297/didong/blob/master/18.PNG)  
-![alt-text](https://github.com/ngocson297/didong/blob/master/13.PNG)
+![alt-text](https://github.com/ngocson297/didong/blob/master/5.png)  
+![alt-text](https://github.com/ngocson297/didong/blob/master/18.png)  
+![alt-text](https://github.com/ngocson297/didong/blob/master/13.png)
 
 ## Chức năng
 1. Gửi tin nhắn, hình ảnh, GIF
